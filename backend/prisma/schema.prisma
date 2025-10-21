@@ -1,0 +1,46 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model VideoJob {
+  id                String    @id @default(uuid())
+  prompt            String
+  durationSeconds   Int
+  frameCount        Int
+  status            String
+  segmentationMode  String
+  finalVideoUrl     String?   @db.Text
+  createdAt         DateTime  @default(now())
+  updatedAt         DateTime  @updatedAt
+  segments          Segment[]
+}
+
+model Segment {
+  id                 String    @id @default(uuid())
+  order              Int
+  prompt             String    @db.Text
+  status             String
+  previewUrl         String?   @db.Text
+  assetUrl           String?   @db.Text
+  soraTaskId         String?
+  failureReason      String?   @db.Text
+  videoJobId         String
+  videoJob           VideoJob  @relation(fields: [videoJobId], references: [id])
+  referenceImage     ReferenceImage?
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+}
+
+model ReferenceImage {
+  id         String   @id @default(uuid())
+  url        String   @db.Text
+  frameOrder Int
+  segmentId  String   @unique
+  segment    Segment  @relation(fields: [segmentId], references: [id])
+  createdAt  DateTime @default(now())
+}

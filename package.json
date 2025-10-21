@@ -1,0 +1,29 @@
+{
+  "name": "sora-controller",
+  "private": true,
+  "version": "0.1.0",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "packages/*"
+  ],
+  "scripts": {
+    "build": "pnpm build:contracts && pnpm build:backend && pnpm build:frontend",
+    "build:contracts": "pnpm --filter @sora/controller-contracts build",
+    "build:backend": "pnpm --filter backend build",
+    "build:frontend": "pnpm --filter frontend build",
+    "dev": "concurrently \"pnpm --filter backend start:dev\" \"pnpm --filter frontend dev\"",
+    "lint": "pnpm --filter backend lint && pnpm --filter frontend lint",
+    "format": "pnpm --filter backend format && pnpm --filter frontend format",
+    "test": "pnpm test:backend && pnpm test:frontend",
+    "test:backend": "pnpm --filter backend test",
+    "test:frontend": "pnpm --filter frontend test",
+    "prepare": "husky install",
+    "prisma:migrate": "pnpm --filter backend exec prisma migrate dev"
+  },
+  "devDependencies": {
+    "concurrently": "8.2.2",
+    "husky": "9.1.4"
+  },
+  "packageManager": "pnpm@9.12.0"
+}

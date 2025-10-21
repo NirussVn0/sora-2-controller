@@ -1,0 +1,10 @@
+node_modules
+storage
+.DS_Store
+npm-debug.log*
+backend/dist
+frontend/.next
+frontend/out
+coverage
+.idea
+.vscode
